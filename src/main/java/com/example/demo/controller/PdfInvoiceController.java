@@ -38,7 +38,7 @@ public class PdfInvoiceController {
             pdfCreator.createHeader(request.getHeaderDetails());
             pdfCreator.createAddress(request.getAddressDetails());
             pdfCreator.createProduct(request.getProducts());
-            pdfCreator.createTermsAndConditions(termsAndConditions, true, "");
+            pdfCreator.createTermsAndConditions(termsAndConditions);
 
             // Retrieve the PDF as a byte array for response
             byte[] pdfContent = Files.readAllBytes(Paths.get(pdfName));

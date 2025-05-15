@@ -50,23 +50,34 @@ public class CodingErrorPdfInvoiceCreatorA4Format {
         this.document=new Document(pdfDocument);
     }
 
-    public   void createTermsAndConditions(List<String> TncList,Boolean lastPage,String imagePath) {
-        lastPage=true;
-        if(lastPage) {
-            float threecol = 190f;
-            float fullwidth[] = {threecol * 3};
-            Table tb = new Table(fullwidth);
-            tb.addCell(new Cell().add("Kushtet\n").setBold().setBorder(Border.NO_BORDER));
-            for (String tnc : TncList) {
+    public void createTermsAndConditions(List<String> tncList) {
+        // Remove all margins/padding for precise positioning
+        document.setMargins(0, 0, 0, 0);
 
-                tb.addCell(new Cell().add(tnc).setBorder(Border.NO_BORDER));
-            }
+        // Calculate available space (A6 page height is 297 points)
+        float pageHeight = 297f;
+        float currentY = document.getRenderer().getCurrentArea().getBBox().getTop();
+        float remainingSpace = pageHeight - currentY - 20f; // 20f bottom margin
 
-            document.add(tb);
-        }else {
-            pdfDocument.addEventHandler(PdfDocumentEvent.END_PAGE, new MyFooter(document,TncList,""));
+        // Create centered container
+        Table container = new Table(1).useAllAvailableWidth();
+        container.setFixedPosition(
+                document.getLeftMargin(),
+                document.getBottomMargin() + 10f, // 10f from bottom
+                document.getPdfDocument().getDefaultPageSize().getWidth() - document.getLeftMargin() - document.getRightMargin()
+        );
+
+        // Add centered messages
+        for (String term : tncList) {
+            container.addCell(new Cell()
+                    .add(new Paragraph(term)
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setFontSize(8)
+                            .setBorder(Border.NO_BORDER)
+                            .setPaddingTop(2f)));
         }
 
+        document.add(container);
         document.close();
     }
 
