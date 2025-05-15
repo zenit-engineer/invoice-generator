@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.InvoiceRequestDto;
 import com.example.demo.service_impl.CodingErrorPdfInvoiceCreatorA4Format;
-import com.example.demo.service_impl.CodingErrorPdfInvoiceCreatorSmallFormat;
+import com.example.demo.service_impl.CodingErrorPdfInvoiceCreatorA6Format;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,8 +23,8 @@ public class PdfInvoiceController {
     public ResponseEntity<byte[]> generateInvoiceBig(@RequestBody InvoiceRequestDto request) {
         List<String> termsAndConditions =
                 List.of(
-                "Ju faleminderit qe na zgjodhet.",
-                "Ju presim prape."
+                "Ju faleminderit që na zgjodhët!",
+                "Mirëseardhëshi!"
         );
         try {
             // Initialize the PDF creator with the desired PDF name
@@ -60,7 +60,7 @@ public class PdfInvoiceController {
     public ResponseEntity<byte[]> generateInvoiceSmall(@RequestBody InvoiceRequestDto request) {
         try {
             String pdfName = "invoice_" + request.getHeaderDetails().getInvoiceNo() + ".pdf";
-            CodingErrorPdfInvoiceCreatorSmallFormat pdfCreator = new CodingErrorPdfInvoiceCreatorSmallFormat(pdfName);
+            CodingErrorPdfInvoiceCreatorA6Format pdfCreator = new CodingErrorPdfInvoiceCreatorA6Format(pdfName);
 
             // Use the single-page method
             pdfCreator.createSinglePageInvoice(
