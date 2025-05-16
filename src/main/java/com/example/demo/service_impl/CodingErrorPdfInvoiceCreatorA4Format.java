@@ -59,21 +59,22 @@ public class CodingErrorPdfInvoiceCreatorA4Format {
         float currentY = document.getRenderer().getCurrentArea().getBBox().getTop();
         float remainingSpace = pageHeight - currentY - 20f; // 20f bottom margin
 
-        // Create centered container
+        // Create centered container with NO borders
         Table container = new Table(1).useAllAvailableWidth();
+        container.setBorder(Border.NO_BORDER); // This removes all borders from the table
         container.setFixedPosition(
                 document.getLeftMargin(),
                 document.getBottomMargin() + 10f, // 10f from bottom
                 document.getPdfDocument().getDefaultPageSize().getWidth() - document.getLeftMargin() - document.getRightMargin()
         );
 
-        // Add centered messages
+        // Add centered messages with NO borders
         for (String term : tncList) {
             container.addCell(new Cell()
+                    .setBorder(Border.NO_BORDER) // Ensure no cell borders
                     .add(new Paragraph(term)
                             .setTextAlignment(TextAlignment.CENTER)
                             .setFontSize(8)
-                            .setBorder(Border.NO_BORDER)
                             .setPaddingTop(2f)));
         }
 
