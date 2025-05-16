@@ -705,16 +705,15 @@
         }
 
         document.getElementById('generateBtn').addEventListener('click', function() {
-
+            // Get the selected print format
             const printFormat = document.getElementById('printFormat').value;
-            const endpoint = `/invoice/generate-${printFormat}`;
+            const endpoint = printFormat === 'a4' ? '/invoice/generate-a4' : '/invoice/generate-a6';
 
             // Collect all form data
             const formData = {
                 headerDetails: {
                     invoiceNo: document.getElementById('invoiceNumber').value,
                     invoiceDate: document.getElementById('invoiceDate').value
-<!--                    invoiceTime: document.getElementById('invoiceTime').value-->
                 },
                 addressDetails: {
                     billingCompany: document.querySelector('[name="billingCompany"]').value,
@@ -751,10 +750,10 @@
             const btn = document.getElementById('generateBtn');
             const originalText = btn.textContent;
             btn.disabled = true;
-                       btn.textContent = 'Duke gjeneruar...';
+            btn.textContent = 'Duke gjeneruar...';
 
             // Send to backend
-            fetch('/invoice/generate-a6', {
+            fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=UTF-8',
@@ -778,14 +777,10 @@
                 window.URL.revokeObjectURL(url);
                 document.body.removeChild(a);
 
-                // ✅ Update the last invoice number ONLY after successful generation
-
-                console.log(formData.headerDetails.invoiceNo);
-                let newInvoiceNumber = formData.headerDetails.invoiceNo ? parseInt(formData.headerDetails.invoiceNo) + 1 : 1;
+                // Update the last invoice number ONLY after successful generation
+                let newInvoiceNumber = formData.headerDetails.invoiceNo ? parseInt(formData.headerDetails.invoiceNo.split('-')[1]) + 1 : 1;
                 localStorage.setItem("lastInvoiceNumber", newInvoiceNumber);
-
             })
-
             .catch(error => {
                 console.error('Error:', error);
                 alert('Gabim në gjenerimin e faturës: ' + error.message);

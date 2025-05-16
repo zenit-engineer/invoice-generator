@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/invoice")
-@CrossOrigin(origins = "*") // Enable CORS for development
+@CrossOrigin(origins = "*")
 public class PdfInvoiceController {
 
     @PostMapping(value = "/generate-a4", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_PDF_VALUE)
