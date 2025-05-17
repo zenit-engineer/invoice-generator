@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/invoice")
-@CrossOrigin(origins = "*") // Enable CORS for development
+@CrossOrigin(origins = "*")
 public class PdfInvoiceController {
 
     @PostMapping(value = "/generate-a4", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_PDF_VALUE)
@@ -38,7 +38,7 @@ public class PdfInvoiceController {
             pdfCreator.createHeader(request.getHeaderDetails());
             pdfCreator.createAddress(request.getAddressDetails());
             pdfCreator.createProduct(request.getProducts());
-            pdfCreator.createTermsAndConditions(termsAndConditions, true, "");
+            pdfCreator.createTermsAndConditions(termsAndConditions);
 
             // Retrieve the PDF as a byte array for response
             byte[] pdfContent = Files.readAllBytes(Paths.get(pdfName));
